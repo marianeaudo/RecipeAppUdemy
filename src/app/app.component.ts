@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Recipe } from './recipes/recipe.model';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'udemyproject';
-}
+
+  chosenComponent: string = 'recipe';
+
+  onNavigate(selection: string) {
+    this.chosenComponent = selection;
+  }
+ }
