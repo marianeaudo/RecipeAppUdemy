@@ -4,8 +4,12 @@
   <div class="row">
     <div 
     class="col-md-45">
-      <app-recipes *ngIf="chosenComponent === 'recipe'"></app-recipes>
-      <app-shopping-list *ngIf="chosenComponent === 'shopping-list'"></app-shopping-list>
+    <router-outlet></router-outlet>
   </div>
+</div>
+<div class="row">
+  <div 
+  class="col-md-45">
+</div>
 </div>
 </div>

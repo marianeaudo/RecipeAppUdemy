@@ -8,7 +8,7 @@ export class RecipebookService {
 
     private recipes: Recipe[] = [
         new Recipe(
-            'A tesTasty Schnitzelt Recipe',
+            'A Tasty Schnitzel Recipe',
             'A super-tasty Schnitzel - just awesome!',
             'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
             [
@@ -31,6 +31,10 @@ export class RecipebookService {
 
     constructor(private shoppinglistService: ShoppinglistService) {
 
+    }
+
+    getRecipeById(id: number) {
+        return this.recipes.slice()[id];
     }
 
     getRecipes() {
