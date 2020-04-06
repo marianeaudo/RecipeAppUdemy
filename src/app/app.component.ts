@@ -8,9 +8,4 @@ import { Recipe } from './recipes/recipe.model';
 })
 export class AppComponent {
 
-  chosenComponent: string = 'recipe';
-
-  onNavigate(selection: string) {
-    this.chosenComponent = selection;
-  }
  }
