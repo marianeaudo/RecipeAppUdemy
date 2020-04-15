@@ -55,10 +55,6 @@ export class AuthComponent implements OnDestroy{
             form.reset();
     }
 
-    onHandleError() {
-        this.error = null;
-    }
-
     private showErrorAlert(errorMessage: string) {
         const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
         const hostViewContainerRef = this.alertHost.viewContainerRef;
