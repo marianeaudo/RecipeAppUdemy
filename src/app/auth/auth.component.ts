@@ -1,8 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { AuthService, AuthResponseData } from './auth.service';
 import { Router } from '@angular/router';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder.directive';
 
 @Component({
     selector: 'app-auth',
@@ -13,8 +15,10 @@ export class AuthComponent implements OnDestroy{
     authSubscription: Subscription;
     isLoading = false;
     error: string = null;
+    @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
+    closeSubscription: Subscription;
 
-    constructor(private authService: AuthService, private router: Router) {
+    constructor(private authService: AuthService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
 
     }
 
@@ -44,15 +48,36 @@ export class AuthComponent implements OnDestroy{
                 this.router.navigate(['/recipes']);
             }, (errorMessage) => {
                 this.error = errorMessage;
+                this.showErrorAlert(errorMessage);
                 this.isLoading = false;
             });
 
             form.reset();
     }
 
+    onHandleError() {
+        this.error = null;
+    }
+
+    private showErrorAlert(errorMessage: string) {
+        const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+        const hostViewContainerRef = this.alertHost.viewContainerRef;
+        hostViewContainerRef.clear();
+        const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+        componentRef.instance.message = errorMessage;
+        this.closeSubscription = componentRef.instance.close.subscribe(() => {
+            this.closeSubscription.unsubscribe();
+            hostViewContainerRef.clear();
+        });
+    }
+
     ngOnDestroy() {
-        if (this.authSubscription != null)
-        this.authSubscription.unsubscribe();
+        if (this.authSubscription) {
+            this.authSubscription.unsubscribe();
+        }
+        if (this.closeSubscription) {
+            this.closeSubscription.unsubscribe();
+        }
     }
 
 }
