@@ -1,38 +1,20 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+
 import { Recipe } from '../recipes/recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppinglistService } from './shoppinglist.service';
-import { Subject } from 'rxjs';
+import * as fromShoppingListActions from '../shopping-list/store/shopping-list.actions';
+import * as fromShopppingList from '../shopping-list/store/shopping-list.reducer';
 
 @Injectable()
 export class RecipebookService {
 
     recipesChanged = new Subject<Recipe[]>();
 
-    // private recipes: Recipe[] = [
-    //     new Recipe(
-    //         'A Tasty Schnitzel Recipe',
-    //         'A super-tasty Schnitzel - just awesome!',
-    //         'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
-    //         [
-    //             new Ingredient('Meat', 1),
-    //             new Ingredient('French Fries', 20)
-    //         ]
-    //         ),
-    //     new Recipe(
-    //         'Big Fat Burger',
-    //         'What else you need to say?',
-    //         'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
-    //         [
-    //             new Ingredient('Buns', 2),
-    //             new Ingredient('Meat', 1)
-    //         ]
-    //         )
-    //   ];
-
     private recipes: Recipe[] = [];
 
-    constructor(private shoppinglistService: ShoppinglistService) {
+    constructor(private store: Store<fromShopppingList.AppState>) {
 
     }
 
@@ -41,12 +23,11 @@ export class RecipebookService {
     }
 
     getRecipes() {
-        //permet de retourner une copie de recipes et non le tableau recipes du service
         return this.recipes.slice();
     }
 
     addToShoppingList(ingredients: Ingredient[]) {
-        this.shoppinglistService.addIngredients(ingredients);
+        this.store.dispatch(new fromShoppingListActions.AddIngredients(ingredients));
     }
 
     addRecipe(recipe: Recipe) {
@@ -68,5 +49,5 @@ export class RecipebookService {
         this.recipes = recipes;
         this.recipesChanged.next(this.recipes.slice())
     }
-    
+
 }
