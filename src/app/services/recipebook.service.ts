@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Recipe } from '../recipes/recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import * as fromShoppingListActions from '../shopping-list/store/shopping-list.actions';
-import * as fromShopppingList from '../shopping-list/store/shopping-list.reducer';
+import * as fromApp from '../store/app.reducer';
 
 @Injectable()
 export class RecipebookService {
@@ -14,7 +14,7 @@ export class RecipebookService {
 
     private recipes: Recipe[] = [];
 
-    constructor(private store: Store<fromShopppingList.AppState>) {
+    constructor(private store: Store<fromApp.AppState>) {
 
     }
 
